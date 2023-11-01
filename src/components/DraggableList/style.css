@@ -1,0 +1,36 @@
+.DraggableList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.DraggableListItem {
+    cursor: pointer;
+    padding: 20px;
+    border-top: 2px solid #eee;
+}
+
+.DraggableListItem:last-child {
+    border-bottom: 2px solid #eee;
+}
+
+.DraggableListItem:hover {
+    background-color: #eee;;
+}
+
+.element-drags-to-top {
+    border-top-color: #f00;
+}
+
+.element-drags-to-bottom + .DraggableListItem {
+    border-top-color: #f00;
+}
+
+.DraggableListItem:last-child.element-drags-to-bottom {
+    border-bottom-color: #f00;
+}
+
+.element-is-being-dragged {
+    box-shadow: inset 0px 0px 5px rgbaa(0,0,0,0.3);
+    cursor: grab;
+}
