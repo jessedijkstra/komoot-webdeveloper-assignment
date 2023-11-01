@@ -1,36 +1,72 @@
 .DraggableList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0 10px;
 }
 
 .DraggableListItem {
-    cursor: pointer;
-    padding: 20px;
-    border-top: 2px solid #eee;
+  transition: border-color 250ms ease-in-out;
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: medium;
+  font-weight: bold;
+  border-color: rgba(116, 116, 116, 0);
+  border-top-style: solid;
+  border-bottom-style: solid;
+  border-top-width: 1px;
+}
+
+.DraggableListItem::before {
+  content: " ";
+  display: inline-block;
+  line-height: 1rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0 10px 0 0;
+  background: linear-gradient(
+    to bottom,
+    #747474 0%,
+    #747474 20%,
+    #74747400 20%,
+    #74747400 40%,
+    #747474 40%,
+    #747474 60%,
+    #74747400 60%,
+    #74747400 80%,
+    #747474 80%,
+    #747474 100%
+  );
 }
 
 .DraggableListItem:last-child {
-    border-bottom: 2px solid #eee;
+  border-bottom-width: 1px;
 }
 
-.DraggableListItem:hover {
-    background-color: #eee;;
-}
-
-.element-drags-to-top {
-    border-top-color: #f00;
-}
-
+.element-drags-to-top,
 .element-drags-to-bottom + .DraggableListItem {
-    border-top-color: #f00;
+  border-top-color: #f6f6f6;
 }
 
 .DraggableListItem:last-child.element-drags-to-bottom {
-    border-bottom-color: #f00;
+  border-bottom-color: #f6f6f6;
 }
 
 .element-is-being-dragged {
-    box-shadow: inset 0px 0px 5px rgbaa(0,0,0,0.3);
-    cursor: grab;
+  cursor: grab;
+}
+
+.element-is-being-dragged::before {
+  background: linear-gradient(
+    to bottom,
+    #f6f6f6 0%,
+    #f6f6f6 20%,
+    #74747400 20%,
+    #74747400 40%,
+    #f6f6f6 40%,
+    #f6f6f6 60%,
+    #74747400 60%,
+    #74747400 80%,
+    #f6f6f6 80%,
+    #f6f6f6 100%
+  );
 }

@@ -1,0 +1,27 @@
+.logo {
+  display: inline-block;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  margin: 10px;
+  height: 32px;
+  margin-right: 0.75rem;
+  position: relative;
+  width: 108px;
+  z-index: 100;
+  background-color: transparent;
+  background-image: url("../public/logo.svg");
+  -webkit-background-position: left center;
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-size: 108px 32px;
+  text-indent: -9999px;
+  vertical-align: middle;
+}
+
+h2 {
+  margin: 10px;
+  font-size: large;
+  padding: 10px 0;
+  border-bottom: 2px solid #747474;
+}

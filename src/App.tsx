@@ -6,15 +6,18 @@ import DraggableList from "./components/DraggableList/DraggableList";
 function App() {
   return (
     <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-      <DraggableList
-        items={[
-          { name: "Hello", id: "hello" },
-          { name: "World", id: "world" },
-          { name: "Foo", id: "foo" },
-          { name: "Bar", id: "bar" },
-        ]}
-      ></DraggableList>
+      <aside>
+        <h1 className="logo">komoot</h1>
+        <h2>Route Builder</h2>
+        <DraggableList
+          items={[
+            { name: "Hello", id: "hello" },
+            { name: "World", id: "world" },
+            { name: "Foo", id: "foo" },
+            { name: "Bar", id: "bar" },
+          ]}
+        ></DraggableList>
+      </aside>
     </div>
   );
 }
