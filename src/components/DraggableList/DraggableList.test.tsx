@@ -10,15 +10,7 @@ import DraggableList from "./DraggableList";
 
 test("renders a list", () => {
   render(
-    <DraggableList
-      list={[
-        { name: "Hello", id: "hello" },
-        { name: "World", id: "world" },
-        { name: "Foo", id: "foo" },
-        { name: "Bar", id: "bar" },
-      ]}
-      onListChange={() => {}}
-    ></DraggableList>
+    <DraggableList list={["Hello", "World", "Foo", "Bar"]}></DraggableList>
   );
 
   const firstChildElement = screen.getByText(/Hello/i);
@@ -30,17 +22,13 @@ test("renders a list", () => {
 
 test("removes a list item", async () => {
   const user = userEvent;
-  let list = [
-    { name: "Hello", id: "hello" },
-    { name: "World", id: "world" },
-    { name: "Foo", id: "foo" },
-    { name: "Bar", id: "bar" },
-  ];
+  let list = ["Hello", "World", "Foo", "Bar"];
 
   render(
     <DraggableList
       list={list}
-      onListChange={(newList) => (list = newList)}
+      onRemove={(index) => index}
+      onReposition={(_fromIndex, _toIndex) => null}
     ></DraggableList>
   );
 

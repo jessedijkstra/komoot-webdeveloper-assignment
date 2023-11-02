@@ -1,12 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import "./style.css";
-import BinSVG from "./bin.svg";
-import BurgerSVG from "./burger.svg";
-
-type TDraggableListItem = {
-  id: string;
-  name: string;
-};
 
 type DraggableListItemProps = React.PropsWithChildren<{
   index: number;
@@ -83,12 +76,17 @@ const DraggableListItem = ({
   );
 };
 
-type DraggableListProps = React.PropsWithRef<{
-  list: TDraggableListItem[];
-  onListChange: (items: TDraggableListItem[]) => any;
+type DraggableListProps<T> = React.PropsWithRef<{
+  list: string[];
+  onReposition?: (fromIndex: number, toIndex: number) => any;
+  onRemove?: (indexToRemove: number) => any;
 }>;
 
-const DraggableList = ({ list, onListChange }: DraggableListProps) => {
+function DraggableList<T>({
+  list,
+  onRemove,
+  onReposition,
+}: DraggableListProps<T>) {
   const dragFromPosition = useRef(-1);
   const targetPosition = useRef(-1);
 
@@ -105,32 +103,19 @@ const DraggableList = ({ list, onListChange }: DraggableListProps) => {
   };
 
   const handleDragEnd = () => {
-    const currentItem = list[dragFromPosition.current];
-
-    if (currentItem) {
-      const newList = [
-        ...list.filter((value, index) => {
-          return value !== currentItem && index < targetPosition.current;
-        }),
-        currentItem,
-        ...list.filter((value, index) => {
-          return value !== currentItem && index >= targetPosition.current;
-        }),
-      ];
-
-      onListChange(newList);
-    }
+    onReposition &&
+      onReposition(dragFromPosition.current, targetPosition.current);
   };
 
   const handleDelete = (indexToRemove: number) => {
-    onListChange(list.filter((_item, index) => index !== indexToRemove));
+    onRemove && onRemove(indexToRemove);
   };
 
   return (
     <ol className="DraggableList" data-testid="DraggableList">
-      {list.map(({ name, id }, index) => (
+      {list.map((label, index) => (
         <DraggableListItem
-          key={id}
+          key={index}
           index={index}
           onDragStart={handleDragStart}
           onDragEnter={handleDragEnter}
@@ -138,11 +123,11 @@ const DraggableList = ({ list, onListChange }: DraggableListProps) => {
           onDragOver={handleDragOver}
           onDelete={handleDelete}
         >
-          {name}
+          {label}
         </DraggableListItem>
       ))}
     </ol>
   );
-};
+}
 
 export default DraggableList;

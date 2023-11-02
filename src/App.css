@@ -3,7 +3,6 @@
   -webkit-flex: 0 0 auto;
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
-  margin: 10px;
   height: 32px;
   margin-right: 0.75rem;
   position: relative;
@@ -19,9 +18,37 @@
   vertical-align: middle;
 }
 
-h2 {
-  margin: 10px;
+.App {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.RouteBuilderSidebar {
+  flex-grow: 0;
+  width: 300px;
+  padding: 20px;
+}
+
+.RouteBuilderSidebarTitle {
   font-size: large;
   padding: 10px 0;
   border-bottom: 2px solid #747474;
+}
+
+.RouteBuilderMap {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+}
+
+.DownloadButton {
+  display: block;
+  width: 100%;
+  margin: 20px 0 0;
+  font-weight: bold;
+  border-radius: 3px;
+  background-color: #c1e453;
+  border: none;
+  padding: 10px;
 }
