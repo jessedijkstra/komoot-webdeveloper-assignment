@@ -44,10 +44,10 @@ test("removes a list item", async () => {
     ></DraggableList>
   );
 
-  const firstChildElement = screen.getByText(/Hello/i);
+  const firstChildElement = screen.getByText(/Hello/i).closest("li");
   expect(firstChildElement).toBeInTheDocument();
 
-  await user.click(getByText(firstChildElement.closest("li"), "Delete"));
+  await user.click(getByText(firstChildElement as HTMLLIElement, "Delete"));
 
   expect(list).not.toContain({ name: "Hello", id: "hello" });
 });
