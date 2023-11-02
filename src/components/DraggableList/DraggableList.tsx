@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./style.css";
+import BinSVG from "./bin.svg";
+import BurgerSVG from "./burger.svg";
 
 type TDraggableListItem = {
   id: string;
@@ -12,6 +14,7 @@ type DraggableListItemProps = React.PropsWithChildren<{
   onDragOver: (index: number) => any;
   onDragEnter: (index: number) => any;
   onDragEnd: (index: number) => any;
+  onDelete: (index: number) => any;
 }>;
 
 const DraggableListItem = ({
@@ -21,6 +24,7 @@ const DraggableListItem = ({
   onDragOver,
   onDragEnter,
   onDragEnd,
+  onDelete,
 }: DraggableListItemProps) => {
   const handleDragStart = (event: React.DragEvent, index: number) => {
     event.currentTarget.classList.add("element-is-being-dragged");
@@ -66,30 +70,41 @@ const DraggableListItem = ({
       draggable
       className="DraggableListItem"
     >
-      {children}
+      <span className="text">{children}</span>
+
+      <button
+        type="button"
+        className="DeleteButton"
+        onClick={(_event) => onDelete(index)}
+      >
+        Delete
+      </button>
     </li>
   );
 };
 
-const DraggableList = ({ items }: { items: TDraggableListItem[] }) => {
-  const [list, setList] = useState(items);
+type DraggableListProps = React.PropsWithRef<{
+  list: TDraggableListItem[];
+  onListChange: (items: TDraggableListItem[]) => any;
+}>;
 
+const DraggableList = ({ list, onListChange }: DraggableListProps) => {
   const dragFromPosition = useRef(-1);
   const targetPosition = useRef(-1);
 
-  const onDragStart = (index: number) => {
+  const handleDragStart = (index: number) => {
     dragFromPosition.current = index;
   };
 
-  const onDragEnter = (index: number) => {
+  const handleDragEnter = (index: number) => {
     targetPosition.current = index;
   };
 
-  const onDragOver = (index: number) => {
+  const handleDragOver = (index: number) => {
     targetPosition.current = index;
   };
 
-  const onDragEnd = () => {
+  const handleDragEnd = () => {
     const currentItem = list[dragFromPosition.current];
 
     if (currentItem) {
@@ -103,8 +118,12 @@ const DraggableList = ({ items }: { items: TDraggableListItem[] }) => {
         }),
       ];
 
-      setList(newList);
+      onListChange(newList);
     }
+  };
+
+  const handleDelete = (indexToRemove: number) => {
+    onListChange(list.filter((_item, index) => index !== indexToRemove));
   };
 
   return (
@@ -113,10 +132,11 @@ const DraggableList = ({ items }: { items: TDraggableListItem[] }) => {
         <DraggableListItem
           key={id}
           index={index}
-          onDragStart={onDragStart}
-          onDragEnter={onDragEnter}
-          onDragEnd={onDragEnd}
-          onDragOver={onDragOver}
+          onDragStart={handleDragStart}
+          onDragEnter={handleDragEnter}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDelete={handleDelete}
         >
           {name}
         </DraggableListItem>
