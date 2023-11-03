@@ -78,14 +78,14 @@ const DraggableListItem = ({
 
 type DraggableListProps<T> = React.PropsWithRef<{
   list: string[];
-  onReposition?: (fromIndex: number, toIndex: number) => any;
-  onRemove?: (indexToRemove: number) => any;
+  onReorderItem?: (fromIndex: number, toIndex: number) => any;
+  onRemoveItem?: (indexToRemove: number) => any;
 }>;
 
 function DraggableList<T>({
   list,
-  onRemove,
-  onReposition,
+  onRemoveItem: onRemove,
+  onReorderItem: onReposition,
 }: DraggableListProps<T>) {
   const dragFromPosition = useRef(-1);
   const targetPosition = useRef(-1);

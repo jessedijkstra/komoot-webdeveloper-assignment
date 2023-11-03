@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Map from "./components/Map/Map";
 import DraggableList from "./components/DraggableList/DraggableList";
 import removeIndexFromList from "./utils/removeItemFromList";
-import repositionItemInList from "./utils/repositionItemInList";
+import reorderItemInList from "./utils/reorderItemInList";
 import waypointsToGPX from "./utils/waypointsToGPX";
-
-type Coordinate = [number, number];
+import replaceItemInList from "./utils/replaceItemInList";
+import { LatLngTuple } from "leaflet";
 
 export default function App() {
-  const [waypoints, setWaypoints] = useState<Coordinate[]>([]);
+  const [waypoints, setWaypoints] = useState<LatLngTuple[]>([]);
 
   function handleRemoveWaypoint(index: number) {
     setWaypoints(removeIndexFromList(waypoints, index));
   }
 
   function handleRepositionWaypoint(fromIndex: number, toIndex: number) {
-    setWaypoints(repositionItemInList(waypoints, fromIndex, toIndex));
+    setWaypoints(reorderItemInList(waypoints, fromIndex, toIndex));
   }
 
-  function handleAddWaypoint(coordinate: Coordinate) {
+  function handleAddWaypoint(coordinate: LatLngTuple) {
     setWaypoints([...waypoints, coordinate]);
+  }
+
+  function handleMoveWaypoint(index: number, coordinate: LatLngTuple) {
+    setWaypoints(replaceItemInList(waypoints, index, coordinate));
   }
 
   function handleDownload(_event: any) {
@@ -44,8 +48,8 @@ export default function App() {
 
         <h2 className="RouteBuilderSidebarTitle">Route Builder</h2>
         <DraggableList
-          onRemove={handleRemoveWaypoint}
-          onReposition={handleRepositionWaypoint}
+          onRemoveItem={handleRemoveWaypoint}
+          onReorderItem={handleRepositionWaypoint}
           list={waypoints.map((_coordinate, index) => `Waypoint ${index + 1}`)}
         ></DraggableList>
         <button className="DownloadButton" onClick={handleDownload}>
@@ -53,7 +57,11 @@ export default function App() {
         </button>
       </aside>
       <main className="RouteBuilderMap">
-        <Map waypoints={waypoints} onAddWaypoint={handleAddWaypoint} />
+        <Map
+          waypoints={waypoints}
+          onAddWaypoint={handleAddWaypoint}
+          onMoveWaypoint={handleMoveWaypoint}
+        />
       </main>
     </div>
   );

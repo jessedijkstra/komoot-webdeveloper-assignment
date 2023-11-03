@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  getByAltText,
-  getByText,
-  render,
-  screen,
-} from "@testing-library/react";
+import { getByText, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DraggableList from "./DraggableList";
 
@@ -27,8 +22,8 @@ test("removes a list item", async () => {
   render(
     <DraggableList
       list={list}
-      onRemove={(index) => index}
-      onReposition={(_fromIndex, _toIndex) => null}
+      onRemoveItem={(index) => index}
+      onReorderItem={(_fromIndex, _toIndex) => null}
     ></DraggableList>
   );
 

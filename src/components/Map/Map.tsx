@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   map,
   tileLayer,
@@ -6,24 +6,31 @@ import {
   Map as LeafletMap,
   divIcon,
   LeafletMouseEvent,
-  latLng,
-  Marker,
   polyline,
-  Polyline,
+  LatLngTuple,
 } from "leaflet";
 import "./style.css";
 import "leaflet/dist/leaflet.css";
 
-type onAddWaypointCallback = (coordinate: [number, number]) => any;
+const INITIAL_COORDINATES: LatLngTuple = [
+  46.37865092969462, 13.836569292167983,
+];
+
+const INITIAL_ZOOMLEVEL = 10;
+
+type onAddWaypointCallback = (coordinate: LatLngTuple) => any;
+type onMoveWaypointCallback = (index: number, coordinate: LatLngTuple) => any;
 
 type MapProps = {
-  waypoints: [number, number][];
+  waypoints: LatLngTuple[];
   onAddWaypoint: onAddWaypointCallback;
+  onMoveWaypoint: onMoveWaypointCallback;
 };
 
 function addMarkersEffect(
   trackingMap: LeafletMap,
-  waypoints: [number, number][]
+  waypoints: LatLngTuple[],
+  onMoveWaypoint: onMoveWaypointCallback
 ) {
   const markers = waypoints.map(([lat, lng], index) => {
     const icon = divIcon({
@@ -31,25 +38,34 @@ function addMarkersEffect(
       html: (index + 1).toString(),
     });
 
-    const a = "Hello";
+    const waypointMarker = marker([lat, lng], { icon, draggable: true });
 
-    return marker([lat, lng], { icon }).addTo(trackingMap);
+    waypointMarker.addTo(trackingMap);
+
+    waypointMarker.on("moveend", (event) => {
+      const { lat, lng } = event.target.getLatLng();
+      onMoveWaypoint(index, [lat, lng]);
+    });
+
+    return waypointMarker;
   });
 
   const path = polyline(waypoints).addTo(trackingMap);
 
   return () => {
-    markers.forEach((marker) => trackingMap.removeLayer(marker));
+    markers.forEach((marker) => {
+      trackingMap.removeLayer(marker);
+    });
     trackingMap.removeLayer(path);
   };
 }
 
 function handleClickEffect(
   trackingMap: LeafletMap,
-  callback: onAddWaypointCallback
+  onAddWaypoint: onAddWaypointCallback
 ) {
   const handleAddWaypoint = (event: LeafletMouseEvent) =>
-    callback([event.latlng.lat, event.latlng.lng]);
+    onAddWaypoint([event.latlng.lat, event.latlng.lng]);
 
   trackingMap.on("click", handleAddWaypoint);
 
@@ -58,7 +74,7 @@ function handleClickEffect(
   };
 }
 
-const Map = ({ waypoints, onAddWaypoint }: MapProps) => {
+const Map = ({ waypoints, onAddWaypoint, onMoveWaypoint }: MapProps) => {
   const trackingMapRef = useRef<LeafletMap>();
 
   const mappingRef = useCallback(() => {
@@ -66,7 +82,7 @@ const Map = ({ waypoints, onAddWaypoint }: MapProps) => {
 
     trackingMapRef.current = trackingMap;
 
-    trackingMap.setView([46.37865092969462, 13.836569292167983], 10);
+    trackingMap.setView(INITIAL_COORDINATES, INITIAL_ZOOMLEVEL);
 
     tileLayer(`https://tile.openstreetmap.org/{z}/{x}/{y}.png`, {
       tileSize: 512,
@@ -82,15 +98,15 @@ const Map = ({ waypoints, onAddWaypoint }: MapProps) => {
     if (trackingMap) {
       return handleClickEffect(trackingMap, onAddWaypoint);
     }
-  }, [waypoints]);
+  }, [onAddWaypoint, waypoints]);
 
   useEffect(() => {
     const trackingMap = trackingMapRef.current;
 
     if (trackingMap) {
-      return addMarkersEffect(trackingMap, waypoints);
+      return addMarkersEffect(trackingMap, waypoints, onMoveWaypoint);
     }
-  }, [waypoints]);
+  }, [onMoveWaypoint, waypoints]);
 
   return <div id="Map" ref={mappingRef}></div>;
 };
