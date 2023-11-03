@@ -18,3 +18,5 @@ if [ -f ".tool-versions" ] && [ -z "$(asdf version 2>/dev/null)" ]; then
   echo "==> Installing NodeJS…"
   asdf install
 fi
+
+npm install
