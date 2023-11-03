@@ -63,7 +63,7 @@ const DraggableListItem = ({
       draggable
       className="DraggableListItem"
     >
-      <span className="text">{children}</span>
+      <span className="DraggableListItemText">{children}</span>
 
       <button
         type="button"

@@ -64,7 +64,6 @@ function createMarkers(
 const Map = ({ waypoints, onAddWaypoint, onMoveWaypoint }: MapProps) => {
   const trackingMapRef = useRef<LeafletMap>();
 
-  // Add the map immediatly after initial render
   useEffect(() => {
     const trackingMap = addMap();
 
