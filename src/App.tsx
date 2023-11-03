@@ -6,10 +6,10 @@ import removeIndexFromList from "./utils/removeItemFromList";
 import reorderItemInList from "./utils/reorderItemInList";
 import waypointsToGPX from "./utils/waypointsToGPX";
 import replaceItemInList from "./utils/replaceItemInList";
-import { LatLngTuple } from "leaflet";
+import { PointTuple } from "leaflet";
 
 export default function App() {
-  const [waypoints, setWaypoints] = useState<LatLngTuple[]>([]);
+  const [waypoints, setWaypoints] = useState<PointTuple[]>([]);
 
   function handleRemoveWaypoint(index: number) {
     setWaypoints(removeIndexFromList(waypoints, index));
@@ -19,11 +19,11 @@ export default function App() {
     setWaypoints(reorderItemInList(waypoints, fromIndex, toIndex));
   }
 
-  function handleAddWaypoint(coordinate: LatLngTuple) {
+  function handleAddWaypoint(coordinate: PointTuple) {
     setWaypoints([...waypoints, coordinate]);
   }
 
-  function handleMoveWaypoint(index: number, coordinate: LatLngTuple) {
+  function handleMoveWaypoint(index: number, coordinate: PointTuple) {
     setWaypoints(replaceItemInList(waypoints, index, coordinate));
   }
 

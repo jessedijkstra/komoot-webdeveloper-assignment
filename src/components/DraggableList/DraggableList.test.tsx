@@ -27,9 +27,11 @@ test("removes a list item", async () => {
     ></DraggableList>
   );
 
+  // eslint-disable-next-line testing-library/no-node-access
   const firstChildElement = screen.getByText(/Hello/i).closest("li");
   expect(firstChildElement).toBeInTheDocument();
 
+  // eslint-disable-next-line testing-library/prefer-screen-queries
   await user.click(getByText(firstChildElement as HTMLLIElement, "Delete"));
 
   expect(list).not.toContain({ name: "Hello", id: "hello" });
