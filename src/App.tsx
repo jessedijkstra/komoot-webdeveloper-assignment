@@ -44,7 +44,7 @@ export default function App() {
   return (
     <div className="App">
       <aside className="RouteBuilderSidebar">
-        <h1 className="logo">komoot</h1>
+        <h1 className="Logo">komoot</h1>
 
         <h2 className="RouteBuilderSidebarTitle">Route Builder</h2>
         <DraggableList
