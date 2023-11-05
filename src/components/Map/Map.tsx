@@ -1,13 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   map,
   tileLayer,
-  marker,
   Map as LeafletMap,
   divIcon,
   LeafletMouseEvent,
   polyline,
   PointTuple,
+  Marker as LeafletMarker,
+  LeafletEvent,
+  Marker,
+  LatLngExpression,
 } from "leaflet";
 import "./style.css";
 import "leaflet/dist/leaflet.css";
@@ -40,29 +43,48 @@ function addMap() {
   return trackingMap;
 }
 
-function createMarkers(
-  waypoints: PointTuple[],
-  onMoveWaypoint: onMoveWaypointCallback
-) {
-  return waypoints.map(([lat, lng], index) => {
-    const icon = divIcon({
-      className: "WaypointMarker",
-      html: (index + 1).toString(),
+class KomootMarker extends Marker {
+  dragged = false;
+  label = "";
+
+  constructor(latlng: LatLngExpression, label: string) {
+    super(latlng, {
+      icon: divIcon({
+        className: "WaypointMarker",
+        html: label,
+      }),
+      draggable: true,
     });
 
-    const waypointMarker = marker([lat, lng], { icon, draggable: true });
+    this.label = label;
 
-    waypointMarker.on("moveend", (event) => {
-      const { lat, lng } = event.target.getLatLng();
-      onMoveWaypoint(index, [lat, lng]);
-    });
+    this.on("dragstart", () => (this.dragged = true));
+    this.on("dragend", () => (this.dragged = false));
+  }
+  setLabel(label: string) {
+    if (this.label !== label) {
+      this.label = label;
 
-    return waypointMarker;
-  });
+      this.setIcon(
+        divIcon({
+          className: "WaypointMarker",
+          html: label,
+        })
+      );
+    }
+  }
+  updateMarker(coordinate: PointTuple, label: string) {
+    this.setLabel(label);
+
+    if (!this.dragged) {
+      this.setLatLng(coordinate);
+    }
+  }
 }
 
 const Map = ({ waypoints, onAddWaypoint, onMoveWaypoint }: MapProps) => {
   const trackingMapRef = useRef<LeafletMap>();
+  const markersRef = useRef<KomootMarker[]>([]);
 
   useEffect(() => {
     const trackingMap = addMap();
@@ -78,17 +100,68 @@ const Map = ({ waypoints, onAddWaypoint, onMoveWaypoint }: MapProps) => {
     const trackingMap = trackingMapRef.current;
 
     if (trackingMap) {
-      const markers = createMarkers(waypoints, onMoveWaypoint);
+      const handleAddWaypoint = (event: LeafletMouseEvent) =>
+        onAddWaypoint([event.latlng.lat, event.latlng.lng]);
 
-      markers.forEach((marker) => marker.addTo(trackingMap));
+      trackingMap.on("click", handleAddWaypoint);
 
       return () => {
-        markers.forEach((marker) => {
-          trackingMap.removeLayer(marker);
-        });
+        trackingMap.off("click", handleAddWaypoint);
       };
     }
-  }, [onMoveWaypoint, waypoints]);
+  }, [onAddWaypoint]);
+
+  useEffect(() => {
+    const trackingMap = trackingMapRef.current;
+    const currentMarkers = markersRef.current;
+
+    if (trackingMap) {
+      const newMarkers = waypoints.map((coordinate, index) => {
+        const currentMarker = currentMarkers[index];
+        const label = `${index + 1}`;
+
+        if (currentMarker) {
+          currentMarker.updateMarker(coordinate, label);
+
+          return currentMarker;
+        }
+
+        const newMarker = new KomootMarker(coordinate, label);
+
+        trackingMap.addLayer(newMarker);
+
+        return newMarker;
+      });
+
+      currentMarkers.slice(newMarkers.length).forEach((markerToRemove) => {
+        trackingMap.removeLayer(markerToRemove);
+      });
+
+      markersRef.current = newMarkers;
+    }
+  }, [waypoints]);
+
+  useEffect(() => {
+    const markers = markersRef.current;
+
+    const callbacks: [LeafletMarker, any][] = markers.map((marker, index) => {
+      const callback = (event: LeafletEvent) => {
+        const { lat, lng } = event.target.getLatLng();
+        onMoveWaypoint(index, [lat, lng]);
+      };
+
+      marker.on("drag", callback);
+
+      return [marker, callback];
+    });
+
+    return () => {
+      callbacks.forEach((callbackTuple) => {
+        const [marker, callback] = callbackTuple;
+        marker.off("drag", callback);
+      });
+    };
+  }, [onMoveWaypoint]);
 
   useEffect(() => {
     const trackingMap = trackingMapRef.current;
@@ -101,21 +174,6 @@ const Map = ({ waypoints, onAddWaypoint, onMoveWaypoint }: MapProps) => {
       };
     }
   }, [waypoints]);
-
-  useEffect(() => {
-    const trackingMap = trackingMapRef.current;
-
-    if (trackingMap) {
-      const handleAddWaypoint = (event: LeafletMouseEvent) =>
-        onAddWaypoint([event.latlng.lat, event.latlng.lng]);
-
-      trackingMap.on("click", handleAddWaypoint);
-
-      return () => {
-        trackingMap.off("click", handleAddWaypoint);
-      };
-    }
-  }, [onAddWaypoint, waypoints]);
 
   return <div id="Map"></div>;
 };
