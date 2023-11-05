@@ -1,4 +1,5 @@
-import { DivIcon, Marker, PointTuple, divIcon } from "leaflet";
+import { DivIcon, Marker } from "leaflet";
+import { Coordinate } from "./Coordinate";
 
 class KomootNumberedIcon extends DivIcon {}
 
@@ -7,7 +8,7 @@ export default class KomootMarker extends Marker {
   label = "";
   _icon?: HTMLImageElement;
 
-  constructor(latlng: PointTuple, label: string, hilight: boolean) {
+  constructor(latlng: Coordinate, label: string, hilight: boolean) {
     super(latlng, {
       icon: new KomootNumberedIcon({
         className: "WaypointMarker",
@@ -39,7 +40,7 @@ export default class KomootMarker extends Marker {
       );
     }
   }
-  updateMarker(coordinate: PointTuple, label: string, hilight: boolean) {
+  updateMarker(coordinate: Coordinate, label: string, hilight: boolean) {
     this.setLabel(label);
     this.setHilight(hilight);
 

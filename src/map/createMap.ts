@@ -1,6 +1,7 @@
-import { map, tileLayer, PointTuple } from "leaflet";
+import { map, tileLayer } from "leaflet";
+import { Coordinate } from "./Coordinate";
 
-const INITIAL_COORDINATES: PointTuple = [46.37865092969462, 13.836569292167983];
+const INITIAL_COORDINATES: Coordinate = [46.37865092969462, 13.836569292167983];
 
 const INITIAL_ZOOMLEVEL = 10;
 

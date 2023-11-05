@@ -1,9 +1,8 @@
 import React, { useRef } from "react";
 import "./style.css";
-import classNames from "classnames";
 import DraggableListItem from "./DraggableListItem";
 
-type DraggableListProps<T> = React.PropsWithRef<{
+type DraggableListProps = React.PropsWithRef<{
   list: string[];
   hilightIndex?: number;
   onReorderItem: (fromIndex: number, toIndex: number) => any;
@@ -12,14 +11,14 @@ type DraggableListProps<T> = React.PropsWithRef<{
   onDimItem: (index: number) => any;
 }>;
 
-function DraggableList<T>({
+function DraggableList({
   list,
   hilightIndex,
   onRemoveItem,
   onReorderItem,
   onHoverItem,
   onDimItem,
-}: DraggableListProps<T>) {
+}: DraggableListProps) {
   const dragFromPosition = useRef(-1);
   const targetPosition = useRef(-1);
 

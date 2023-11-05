@@ -1,10 +1,11 @@
-import { Map, PointTuple } from "leaflet";
+import { Map } from "leaflet";
 import KomootMarker from "./KomootMarker";
+import { Coordinate } from "./Coordinate";
 
 export default function updateOrAddMarkers(
   trackingMap: Map,
   currentMarkers: KomootMarker[],
-  waypoints: PointTuple[],
+  waypoints: Coordinate[],
   hilightIndex?: number
 ) {
   const newMarkers = waypoints.map((coordinate, index) => {

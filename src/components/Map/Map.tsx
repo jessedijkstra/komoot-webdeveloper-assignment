@@ -3,7 +3,6 @@ import {
   Map as LeafletMap,
   LeafletMouseEvent,
   polyline,
-  PointTuple,
   LeafletEvent,
 } from "leaflet";
 import KomootMarker from "../../map/KomootMarker";
@@ -11,14 +10,15 @@ import "./style.css";
 import "leaflet/dist/leaflet.css";
 import createMap from "../../map/createMap";
 import updateOrAddMarkers from "../../map/addOrUpdateMarkers";
+import { Coordinate } from "../../map/Coordinate";
 
-type onAddWaypointCallback = (coordinate: PointTuple) => any;
-type onMoveWaypointCallback = (index: number, coordinate: PointTuple) => any;
+type onAddWaypointCallback = (coordinate: Coordinate) => any;
+type onMoveWaypointCallback = (index: number, coordinate: Coordinate) => any;
 type onHilightWaypointCallback = (index: number) => any;
 type onDimWaypointCallback = (index: number) => any;
 
 type MapProps = {
-  waypoints: PointTuple[];
+  waypoints: Coordinate[];
   hilightIndex?: number;
   onAddWaypoint: onAddWaypointCallback;
   onMoveWaypoint: onMoveWaypointCallback;

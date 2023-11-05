@@ -4,12 +4,12 @@ import LeafletMap from "./components/Map/Map";
 import DraggableList from "./components/DraggableList/DraggableList";
 import removeIndexFromList from "./utils/removeItemFromList";
 import reorderItemInList from "./utils/reorderItemInList";
-import waypointsToGPX from "./utils/waypointsToGPX";
+import coordindatesToGPX from "./utils/coordinatesToGPX";
 import replaceItemInList from "./utils/replaceItemInList";
-import { PointTuple } from "leaflet";
+import { Coordinate } from "./map/Coordinate";
 
 type Waypoint = {
-  coordinate: PointTuple;
+  coordinate: Coordinate;
   hilight: boolean;
 };
 
@@ -24,11 +24,11 @@ export default function App() {
     setWaypoints(reorderItemInList(waypoints, fromIndex, toIndex));
   }
 
-  function handleAddWaypoint(coordinate: PointTuple) {
+  function handleAddWaypoint(coordinate: Coordinate) {
     setWaypoints([...waypoints, { coordinate, hilight: false }]);
   }
 
-  function handleMoveWaypoint(index: number, coordinate: PointTuple) {
+  function handleMoveWaypoint(index: number, coordinate: Coordinate) {
     const current = waypoints[index];
     setWaypoints(
       replaceItemInList(waypoints, index, { ...current, coordinate })
@@ -49,7 +49,7 @@ export default function App() {
   }
 
   function handleDownload(_event: any) {
-    const gpxContent = waypointsToGPX(
+    const gpxContent = coordindatesToGPX(
       waypoints.map(({ coordinate }) => coordinate)
     );
     const element = document.createElement("a");
