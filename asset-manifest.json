@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/komoot-webdeveloper-assignment/static/css/main.c848ddd6.css",
-    "main.js": "/komoot-webdeveloper-assignment/static/js/main.e5b18db9.js",
+    "main.css": "/komoot-webdeveloper-assignment/static/css/main.693e7df6.css",
+    "main.js": "/komoot-webdeveloper-assignment/static/js/main.b6075f0a.js",
     "static/js/787.48222046.chunk.js": "/komoot-webdeveloper-assignment/static/js/787.48222046.chunk.js",
     "static/media/logo.svg": "/komoot-webdeveloper-assignment/static/media/logo.1685b84557de5dfa5bcc.svg",
     "index.html": "/komoot-webdeveloper-assignment/index.html",
     "static/media/burger.svg": "/komoot-webdeveloper-assignment/static/media/burger.cac40eb07ba845d99df6.svg",
     "static/media/bin.svg": "/komoot-webdeveloper-assignment/static/media/bin.1c4a5dc2b8ea2501abac.svg",
-    "main.c848ddd6.css.map": "/komoot-webdeveloper-assignment/static/css/main.c848ddd6.css.map",
-    "main.e5b18db9.js.map": "/komoot-webdeveloper-assignment/static/js/main.e5b18db9.js.map",
+    "main.693e7df6.css.map": "/komoot-webdeveloper-assignment/static/css/main.693e7df6.css.map",
+    "main.b6075f0a.js.map": "/komoot-webdeveloper-assignment/static/js/main.b6075f0a.js.map",
     "787.48222046.chunk.js.map": "/komoot-webdeveloper-assignment/static/js/787.48222046.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c848ddd6.css",
-    "static/js/main.e5b18db9.js"
+    "static/css/main.693e7df6.css",
+    "static/js/main.b6075f0a.js"
   ]
 }
