@@ -1,8 +1,23 @@
-.Logo {
+.RouteBuilder {
+  min-height: 100vh;
+
+  display: grid;
+  grid-auto-rows: 1fr;
+  grid-template-columns: 300px auto;
+  grid-template-rows: min-content auto min-content;
+  gap: 0px 0px;
+  grid-template-areas:
+    "Logo Map"
+    "List Map"
+    "Download Map";
+}
+
+.KomootLogo {
+  grid-area: Logo;
+
+  margin: 20px;
+
   display: inline-block;
-  -webkit-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
   height: 32px;
   margin-right: 0.75rem;
   position: relative;
@@ -18,31 +33,23 @@
   vertical-align: middle;
 }
 
-.App {
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
+.RouteBuilderList {
+  grid-area: List;
+  margin: 0 20px;
 }
 
-.RouteBuilderSidebar {
-  flex-grow: 0;
-  width: 300px;
-  padding: 20px;
-}
-
-.RouteBuilderSidebarTitle {
+.RouteBuilderListTitle {
   font-size: large;
-  padding: 10px 0;
+  padding: 0 0 10px;
   border-bottom: 2px solid #747474;
 }
 
-.RouteBuilderMap {
-  flex-grow: 1;
-  display: flex;
-  position: relative;
+.RouteBuilderDownload {
+  grid-area: Download;
+  padding: 20px;
 }
 
-.DownloadButton {
+.RouteBuilderDownloadButton {
   display: block;
   width: 100%;
   margin: 20px 0 0;
@@ -51,4 +58,35 @@
   background-color: #c1e453;
   border: none;
   padding: 10px;
+}
+
+.RouteBuilderMap {
+  grid-area: Map;
+  position: relative;
+}
+
+@media only screen and (max-width: 600px) {
+  .RouteBuilder {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: min-content min-content auto min-content;
+    gap: 0px;
+    grid-template-areas:
+      "Logo"
+      "List"
+      "Map"
+      "Download";
+  }
+
+  .RouteBuilderList {
+    display: none;
+  }
+
+  .RouteBuilderMap {
+    min-height: 100px;
+  }
+
+  .RouteBuilderDownload {
+    padding: 10px;
+  }
 }

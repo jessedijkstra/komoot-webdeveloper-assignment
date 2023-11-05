@@ -67,11 +67,11 @@ export default function App() {
   const hilightedIndex = waypoints.findIndex(({ hilight }) => hilight);
 
   return (
-    <div className="App">
-      <aside className="RouteBuilderSidebar">
-        <h1 className="Logo">komoot</h1>
+    <div className="RouteBuilder">
+      <h1 className="KomootLogo">komoot</h1>
 
-        <h2 className="RouteBuilderSidebarTitle">Route Builder</h2>
+      <nav className="RouteBuilderList">
+        <h2 className="RouteBuilderListTitle">Route Builder</h2>
         <DraggableList
           onRemoveItem={handleRemoveWaypoint}
           onReorderItem={handleRepositionWaypoint}
@@ -80,10 +80,7 @@ export default function App() {
           list={waypoints.map((_coordinate, index) => `Waypoint ${index + 1}`)}
           hilightIndex={hilightedIndex}
         ></DraggableList>
-        <button className="DownloadButton" onClick={handleDownload}>
-          Download your Route
-        </button>
-      </aside>
+      </nav>
       <main className="RouteBuilderMap">
         <LeafletMap
           hilightIndex={hilightedIndex}
@@ -94,6 +91,11 @@ export default function App() {
           onMoveWaypoint={handleMoveWaypoint}
         />
       </main>
+      <footer className="RouteBuilderDownload">
+        <button className="RouteBuilderDownloadButton" onClick={handleDownload}>
+          Download your Route
+        </button>
+      </footer>
     </div>
   );
 }
