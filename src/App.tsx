@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import Map from "./components/Map/Map";
+import LeafletMap from "./components/Map/Map";
 import DraggableList from "./components/DraggableList/DraggableList";
 import removeIndexFromList from "./utils/removeItemFromList";
 import reorderItemInList from "./utils/reorderItemInList";
@@ -8,8 +8,13 @@ import waypointsToGPX from "./utils/waypointsToGPX";
 import replaceItemInList from "./utils/replaceItemInList";
 import { PointTuple } from "leaflet";
 
+type Waypoint = {
+  coordinate: PointTuple;
+  hilight: boolean;
+};
+
 export default function App() {
-  const [waypoints, setWaypoints] = useState<PointTuple[]>([]);
+  const [waypoints, setWaypoints] = useState<Waypoint[]>([]);
 
   function handleRemoveWaypoint(index: number) {
     setWaypoints(removeIndexFromList(waypoints, index));
@@ -20,15 +25,33 @@ export default function App() {
   }
 
   function handleAddWaypoint(coordinate: PointTuple) {
-    setWaypoints([...waypoints, coordinate]);
+    setWaypoints([...waypoints, { coordinate, hilight: false }]);
   }
 
   function handleMoveWaypoint(index: number, coordinate: PointTuple) {
-    setWaypoints(replaceItemInList(waypoints, index, coordinate));
+    const current = waypoints[index];
+    setWaypoints(
+      replaceItemInList(waypoints, index, { ...current, coordinate })
+    );
+  }
+
+  function handleHilightWaypoint(hilightIndex: number) {
+    setWaypoints(
+      waypoints.map((value, index) => ({
+        ...value,
+        hilight: index === hilightIndex,
+      }))
+    );
+  }
+
+  function handleDimWaypoints(_index: number) {
+    setWaypoints(waypoints.map((value) => ({ ...value, hilight: false })));
   }
 
   function handleDownload(_event: any) {
-    const gpxContent = waypointsToGPX(waypoints);
+    const gpxContent = waypointsToGPX(
+      waypoints.map(({ coordinate }) => coordinate)
+    );
     const element = document.createElement("a");
     const file = new Blob([gpxContent], { type: "application/octet-stream" });
 
@@ -41,6 +64,8 @@ export default function App() {
     document.body.removeChild(element);
   }
 
+  const hilightedIndex = waypoints.findIndex(({ hilight }) => hilight);
+
   return (
     <div className="App">
       <aside className="RouteBuilderSidebar">
@@ -50,15 +75,21 @@ export default function App() {
         <DraggableList
           onRemoveItem={handleRemoveWaypoint}
           onReorderItem={handleRepositionWaypoint}
+          onHoverItem={handleHilightWaypoint}
+          onDimItem={handleDimWaypoints}
           list={waypoints.map((_coordinate, index) => `Waypoint ${index + 1}`)}
+          hilightIndex={hilightedIndex}
         ></DraggableList>
         <button className="DownloadButton" onClick={handleDownload}>
           Download your Route
         </button>
       </aside>
       <main className="RouteBuilderMap">
-        <Map
-          waypoints={waypoints}
+        <LeafletMap
+          hilightIndex={hilightedIndex}
+          waypoints={waypoints.map(({ coordinate }) => coordinate)}
+          onHilightWaypoint={handleHilightWaypoint}
+          onDimWaypoint={handleDimWaypoints}
           onAddWaypoint={handleAddWaypoint}
           onMoveWaypoint={handleMoveWaypoint}
         />

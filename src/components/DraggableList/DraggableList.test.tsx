@@ -3,9 +3,19 @@ import { getByText, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DraggableList from "./DraggableList";
 
+const defaultProps = {
+  onReorderItem: (_fromIndex: number, _toIndex: number) => null,
+  onRemoveItem: (_indexToRemove: number) => null,
+  onHoverItem: (_index: number) => null,
+  onDimItem: (_index: number) => null,
+};
+
 test("renders a list", () => {
   render(
-    <DraggableList list={["Hello", "World", "Foo", "Bar"]}></DraggableList>
+    <DraggableList
+      {...defaultProps}
+      list={["Hello", "World", "Foo", "Bar"]}
+    ></DraggableList>
   );
 
   const firstChildElement = screen.getByText(/Hello/i);
@@ -19,11 +29,12 @@ test("removes a list item", async () => {
   const user = userEvent;
   const list = ["Hello", "World", "Foo", "Bar"];
   const callback = jest.fn();
+
   render(
     <DraggableList
+      {...defaultProps}
       list={list}
       onRemoveItem={callback}
-      onReorderItem={(_fromIndex, _toIndex) => null}
     ></DraggableList>
   );
 

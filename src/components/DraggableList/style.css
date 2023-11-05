@@ -5,21 +5,18 @@
 }
 
 .DraggableListItem {
-  transition: border-color 250ms ease-in-out;
   cursor: pointer;
-  padding: 10px 0;
+  position: relative;
+  padding: 10px;
+  border-radius: 3px;
   font-size: medium;
   font-weight: bold;
-  border-color: rgba(116, 116, 116, 0);
-  border-top-style: solid;
-  border-bottom-style: solid;
-  border-top-width: 1px;
   display: flex;
   align-items: center;
 }
 
-.DraggableListItem:last-child {
-  border-bottom-width: 1px;
+.DraggableListItem.is-hilighted {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .DraggableListItem::before {
@@ -46,21 +43,33 @@
   flex-grow: 1;
 }
 
-.DraggableListItem.element-drags-to-top,
-.DraggableListItem.element-drags-to-bottom + .DraggableListItem {
-  border-top-color: #f6f6f6;
+.DraggableListItem::after {
+  content: " ";
+  left: 0;
+  right: 0;
+  height: 0px;
+  background: #f6f6f6;
+  border-radius: 2px;
+  position: absolute;
 }
 
-.DraggableListItem:last-child.element-drags-to-bottom {
-  border-bottom-color: #f6f6f6;
+.DraggableListItem.has-element-dragged-to-top::after,
+.DraggableListItem.has-element-dragged-to-bottom + .DraggableListItem::after {
+  top: -1px;
+  height: 2px;
 }
 
-.DraggableListItem.element-is-being-dragged {
+.DraggableListItem:last-child.has-element-dragged-to-bottom::after {
+  bottom: -1px;
+  height: 2px;
+}
+
+.DraggableListItem.is-dragged {
   cursor: grab;
 }
 
-.DraggableListItem.element-is-being-dragged .DraggableListItemText,
-.DraggableListItem.element-is-being-dragged::before {
+.DraggableListItem.is-dragged .DraggableListItemText,
+.DraggableListItem.is-dragged::before {
   opacity: 0.3;
 }
 
@@ -87,6 +96,6 @@
   color: #f63636;
 }
 
-.DraggableListItem.element-is-being-dragged .DeleteButton {
+.DraggableListItem.is-dragged .DeleteButton {
   opacity: 0;
 }
