@@ -1,6 +1,6 @@
 import { Map } from "leaflet";
 import KomootMarker from "./KomootMarker";
-import { Coordinate } from "./Coordinate";
+import { Coordinate } from "../../utils/map/Coordinate";
 
 export default function updateOrAddMarkers(
   trackingMap: Map,

@@ -1,5 +1,5 @@
 import { DivIcon, Marker } from "leaflet";
-import { Coordinate } from "./Coordinate";
+import { Coordinate } from "../../utils/map/Coordinate";
 
 class KomootNumberedIcon extends DivIcon {}
 

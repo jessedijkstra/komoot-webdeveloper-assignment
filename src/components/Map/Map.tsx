@@ -5,12 +5,13 @@ import {
   polyline,
   LeafletEvent,
 } from "leaflet";
-import KomootMarker from "../../map/KomootMarker";
-import "./style.css";
+import KomootMarker from "./KomootMarker";
+import addMapToDOM from "./addMapToDOM";
+import updateOrAddMarkers from "./addOrUpdateMarkers";
+import { Coordinate } from "../../utils/map/Coordinate";
+
 import "leaflet/dist/leaflet.css";
-import createMap from "../../map/createMap";
-import updateOrAddMarkers from "../../map/addOrUpdateMarkers";
-import { Coordinate } from "../../map/Coordinate";
+import "./style.css";
 
 type onAddWaypointCallback = (coordinate: Coordinate) => any;
 type onMoveWaypointCallback = (index: number, coordinate: Coordinate) => any;
@@ -39,7 +40,7 @@ const Map = ({
   const markersRef = useRef<KomootMarker[]>([]);
 
   useEffect(() => {
-    const trackingMap = createMap(
+    const trackingMap = addMapToDOM(
       containerRef.current as unknown as HTMLElement
     );
     trackingMapRef.current = trackingMap;

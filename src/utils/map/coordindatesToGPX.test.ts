@@ -1,4 +1,4 @@
-import { Coordinate } from "../map/Coordinate";
+import { Coordinate } from "./Coordinate";
 import coordindatesToGPX from "./coordinatesToGPX";
 
 test("creates a bounded GPX string", () => {

@@ -1,4 +1,4 @@
-import { Coordinate } from "../map/Coordinate";
+import { Coordinate } from "./Coordinate";
 
 const waypointElement = ([lat, lng]: Coordinate) =>
   `\t<wpt lat="${lat}" lon="${lng}"></wpt>`;

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./App.css";
-import LeafletMap from "./components/Map/Map";
-import DraggableList from "./components/DraggableList/DraggableList";
-import removeIndexFromList from "./utils/removeItemFromList";
-import reorderItemInList from "./utils/reorderItemInList";
-import coordindatesToGPX from "./utils/coordinatesToGPX";
-import replaceItemInList from "./utils/replaceItemInList";
-import { Coordinate } from "./map/Coordinate";
+import LeafletMap from "../Map/Map";
+import DraggableList from "../DraggableList/DraggableList";
+import removeIndexFromList from "../../utils/list/removeItemFromList";
+import reorderItemInList from "../../utils/list/reorderItemInList";
+import coordindatesToGPX from "../../utils/map/coordinatesToGPX";
+import replaceItemInList from "../../utils/list/replaceItemInList";
+import { Coordinate } from "../../utils/map/Coordinate";
 
 type Waypoint = {
   coordinate: Coordinate;
