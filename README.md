@@ -19,3 +19,7 @@ You will also see any lint errors in the console.
 ### `script/test`
 
 Run the unit tests.
+
+### `script/deploy`
+
+Deploy the application to Github Pages.
